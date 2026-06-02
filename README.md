@@ -5,19 +5,17 @@ A full-stack Twitter/X clone built with **Next.js 15**, **TypeScript**, **Tailwi
 Users can create posts, comment, like/unlike posts, follow/unfollow users, receive notifications, update profiles, and explore user profiles in a modern responsive interface.
 
 ---
----
 
 ## 📸 Screenshots
 
 Add screenshots here after deployment:
 
-```md
 <img width="1363" height="634" alt="image" src="https://github.com/user-attachments/assets/07a539b3-07b1-47db-8085-c154370c90d5" />
 <img width="1362" height="632" alt="image" src="https://github.com/user-attachments/assets/393e3dd0-4f48-4740-8f7f-c49f59c9693a" />
 <img width="1366" height="640" alt="image" src="https://github.com/user-attachments/assets/a5bd7bd3-3578-4fc6-b6ae-6655b940ac4a" />
 <img width="1364" height="642" alt="image" src="https://github.com/user-attachments/assets/82c14274-5cda-4999-b05a-cfdc422bc900" />
 
-```
+---
 
 ## 🚀 Features
 
