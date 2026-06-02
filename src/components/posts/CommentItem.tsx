@@ -25,21 +25,36 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
 
   return (
     <div className="border-b border-neutral-800 p-5 cursor-pointer hover:bg-neutral-900 transition">
-      <div className="flex flex-row items-start gap-3">
-        <Avatar userId={data?.authorId} />
-        <div>
-          <div className="flex flex-row items-center gap-2">
-            <p onClick={goToUser} className="text-white font-semibold cursor-pointer hover:underline">{data?.author?.name}</p>
-            <span className="text-neutral-500 cursor-pointer hover:underline hidden md:block">{data?.author?.username}</span>
+      <div className="flex items-start gap-3">
+        {/* FIX: Avatar never shrinks */}
+        <div className="shrink-0">
+          <Avatar userId={data?.authorId} />
+        </div>
+
+        {/* FIX: Content takes remaining width */}
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <p
+              onClick={goToUser}
+              className="text-white font-semibold cursor-pointer hover:underline"
+            >
+              {data?.author?.name}
+            </p>
+
+            <span className="text-neutral-500 hidden md:block">
+              @{data?.author?.username}
+            </span>
+
             <span className="text-neutral-500 text-sm">{createdAt}</span>
           </div>
-          <div className="text-white mt-1">
+
+          <div className="text-white mt-1 whitespace-pre-wrap wrap-break-word">
             {data?.body}
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 

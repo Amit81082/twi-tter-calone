@@ -87,8 +87,10 @@ const PostItem: React.FC<PostFeedProps> = ({ userId, data }) => {
       className="border-b border-neutral-800 p-5 cursor-pointer hover:bg-neutral-900 transition"
     >
       <div className="flex flex-row items-start gap-3">
-        <Avatar userId={data.authorId} />
-        <div>
+        <div className="shrink-0">
+          <Avatar userId={data.authorId} />
+        </div>
+        <div className="flex flex-col flex-1 min-w-0">
           <div className="flex flex-row items-center gap-2">
             <p
               onClick={goToUser}
@@ -106,7 +108,7 @@ const PostItem: React.FC<PostFeedProps> = ({ userId, data }) => {
               {createdAt && createdAt + " ago"}
             </span>
           </div>
-          <div className="text-white mt-1 text-[20px]">{data.body}</div>
+          <div className="text-white mt-1 text-[20px] whitespace-pre-wrap wrap-break-word">{data.body}</div>
           <div className="flex flex-row items-center mt-3 gap-10">
             <div className="flex flex-row items-center text-neutral-400 gap-2 cursor-pointer transition hover:text-sky-500">
               <AiOutlineMessage size={20} />

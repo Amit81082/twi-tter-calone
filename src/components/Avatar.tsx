@@ -19,7 +19,6 @@ const Avatar: React.FC<AvatarProps> = ({ userId, isLarge, hasBorder }) => {
     router.push(url);
   }, [router, userId]);
 
-  const src = fetchedUser?.profileImage || "/images/placeholder.jpg";
 
   return (
     <div
