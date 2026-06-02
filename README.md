@@ -8,7 +8,6 @@ Users can create posts, comment, like/unlike posts, follow/unfollow users, recei
 
 ## 📸 Screenshots
 
-Add screenshots here after deployment:
 
 <img width="1363" height="634" alt="image" src="https://github.com/user-attachments/assets/07a539b3-07b1-47db-8085-c154370c90d5" />
 <img width="1362" height="632" alt="image" src="https://github.com/user-attachments/assets/393e3dd0-4f48-4740-8f7f-c49f59c9693a" />
