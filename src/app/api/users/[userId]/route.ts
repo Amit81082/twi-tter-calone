@@ -4,7 +4,7 @@ interface IParams {
   userId?: string;
 }
 
-export async function GET(request: Request, { params }: { params: IParams }) {
+export async function GET(request: Request, { params }: { params: Promise<IParams> }) {
   try {
     // ✅ GET USER ID
 
