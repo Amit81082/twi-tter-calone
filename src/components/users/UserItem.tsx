@@ -12,7 +12,6 @@ interface UserItemProps {
   name?: string;
   username?: string;
   bio?: string;
-  profileImage?: string;
 }
 
 const UserItem: React.FC<UserItemProps> = ({
@@ -20,7 +19,6 @@ const UserItem: React.FC<UserItemProps> = ({
   name,
   username,
   bio,
-  profileImage,
 }) => {
   const router = useRouter();
   const { data: currentUser } = useCurrentUser();
@@ -41,7 +39,7 @@ const UserItem: React.FC<UserItemProps> = ({
         className="flex flex-row items-center gap-4 flex-1"
         onClick={handleUserClick}
       >
-        <Avatar userId={userId} profileImage={profileImage} />
+        <Avatar userId={userId} />
         <div className="flex flex-col gap-1">
           <p className="text-white font-semibold text-sm">{name}</p>
           <p className="text-neutral-400 text-sm">@{username}</p>
@@ -52,10 +50,7 @@ const UserItem: React.FC<UserItemProps> = ({
       </div>
       <Button
         label={isFollowing ? "Unfollow" : "Follow"}
-        onClick={(e) => {
-          e.stopPropagation();
-          toggleFollow();
-        }}
+        onClick={toggleFollow}
         secondary={!isFollowing}
         outline={isFollowing}
       />

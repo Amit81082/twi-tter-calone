@@ -41,7 +41,6 @@ const UsersFeed = () => {
           name={user.name}
           username={user.username}
           bio={user.bio}
-          profileImage={user.profileImage}
         />
       ))}
     </div>
