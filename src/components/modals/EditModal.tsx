@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import FormModal from "../FormModal";
 import Input from "../Input";
 import ImageUpload from "../ImageUpload";
+import useImageUpload from "@/hooks/useImageUpload";
 
 const EditModal = () => {
   const { data: currentUser } = useCurrentUser();
@@ -16,6 +17,7 @@ const EditModal = () => {
     currentUser?.id,
   );
   const editModal = useEditModal();
+  const { uploadImage } = useImageUpload();
 
   const [username, setUsername] = useState(fetchedUser?.username || "");
   const [name, setName] = useState(fetchedUser?.name || "");
@@ -27,21 +29,41 @@ const EditModal = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  // ✅ CHANGED
+
   const onSubmit = useCallback(async () => {
     try {
       setIsLoading(true);
+
+      let uploadedProfileImage = profileImage;
+      let uploadedCoverImage = coverImage;
+
+      // ✅ Upload Profile Image Only If Base64
+      if (profileImage?.startsWith("data:image")) {
+        uploadedProfileImage = await uploadImage(profileImage);
+      }
+
+      // ✅ Upload Cover Image Only If Base64
+      if (coverImage?.startsWith("data:image")) {
+        uploadedCoverImage = await uploadImage(coverImage);
+      }
+
       await axios.patch("/api/edit", {
         username,
         name,
         bio,
-        profileImage,
-        coverImage,
+        profileImage: uploadedProfileImage,
+        coverImage: uploadedCoverImage,
       });
+
       mutateFetchedUser();
+
       toast.success("Updated");
+
       editModal.onClose();
     } catch (error) {
       console.log(error);
+
       toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
@@ -54,6 +76,7 @@ const EditModal = () => {
     name,
     profileImage,
     username,
+    uploadImage,
   ]);
 
   useEffect(() => {
@@ -110,6 +133,6 @@ const EditModal = () => {
       body={bodyContent}
     />
   );
-};
+};;;
 
 export default EditModal;

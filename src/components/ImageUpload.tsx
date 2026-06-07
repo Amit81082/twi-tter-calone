@@ -4,6 +4,7 @@ import React, { useState, useCallback} from 'react'
 import {useDropzone} from 'react-dropzone'
 import Image from 'next/image'
 
+
 interface ImageUploadProps {
 onChange: (base64: string) => void;
 value?: string;

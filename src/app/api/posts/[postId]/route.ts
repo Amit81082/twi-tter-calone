@@ -91,11 +91,25 @@ export async function GET(
       },
 
       include: {
-        author: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            profileImage: true,
+          },
+        },
 
         comments: {
           include: {
-            author: true,
+            author: {
+              select: {
+                id: true,
+                name: true,
+                username: true,
+                profileImage: true,
+              },
+            },
           },
 
           orderBy: {

@@ -44,7 +44,7 @@ const UserItem: React.FC<UserItemProps> = ({
           <p className="text-white font-semibold text-sm">{name}</p>
           <p className="text-neutral-400 text-sm">@{username}</p>
           {bio && (
-            <p className="text-neutral-400 text-sm line-clamp-2">{bio}</p>
+            <p className="text-neutral-400 text-sm line-clamp-1">{bio}</p>
           )}
         </div>
       </div>

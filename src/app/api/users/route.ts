@@ -5,13 +5,17 @@ export async function GET() {
     // ✅ GET USERS
 
     const users = await Prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        bio: true,
+      },
       orderBy: {
         createdAt: "desc",
       },
     });
-
-    // ✅ RETURN USERS
-
+    // ✅ RETURN USER
     return Response.json(users, {
       status: 200,
     });
