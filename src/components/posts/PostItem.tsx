@@ -25,7 +25,7 @@ const PostItem: React.FC<PostFeedProps> = ({ userId, data }) => {
   const loginModal = useLoginModal();
   const { data: currentUser } = useCurrentUser();
   const { mutate: mutatePosts } = usePosts(userId);
-  const { hasLiked, toggleLike } = useLike(data.id);
+  const { hasLiked, toggleLike, likeCount } = useLike(data.id);
 
   const goToUser = useCallback(
     (event: any) => {
@@ -119,7 +119,7 @@ const PostItem: React.FC<PostFeedProps> = ({ userId, data }) => {
               className="flex flex-row items-center text-neutral-400 gap-2 cursor-pointer transition hover:text-red-500"
             >
               <LikeIcon size={20} color={hasLiked ? "red" : ""} />
-              <p>{data.likedIds?.length || 0}</p>
+              <p>{likeCount}</p>
             </div>
             {currentUser?.id === data.authorId && (
               <div

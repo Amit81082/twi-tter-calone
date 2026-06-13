@@ -15,36 +15,55 @@ const useFollow = (userId: string) => {
 
   const { data: fetchedUser, mutate: mutateFetchedUser } = useUser(userId);
 
-  const isFollowing = useMemo(() => {
-    const list = currentUser?.followingIds || [];
-
-    return list.includes(userId);
-  }, [currentUser, userId]);
+ const isFollowing = useMemo(() => {
+   return currentUser?.followingIds?.includes(userId) || false;
+ }, [currentUser?.followingIds, userId]);
 
   const toggleFollow = useCallback(async () => {
-    try {
-      if (!currentUser) {
-        loginModal.onOpen();
-        return;
-      }
+    if (!currentUser) {
+      loginModal.onOpen();
+      return;
+    }
 
+    const oldFollowingIds = currentUser.followingIds || [];
+
+    const updatedFollowingIds = isFollowing
+      ? oldFollowingIds.filter((id: string) => id !== userId)
+      : [...oldFollowingIds, userId];
+
+    // 🚀 Optimistic update
+    mutateCurrentUser(
+      {
+        ...currentUser,
+        followingIds: updatedFollowingIds,
+      },
+      false,
+    );
+
+    try {
       if (isFollowing) {
         await axios.delete("/api/follow", {
           data: {
             userId,
           },
         });
+
         toast.success("Unfollowed");
       } else {
         await axios.post("/api/follow", {
           userId,
         });
+
         toast.success("Followed");
       }
 
+      // ✅ sync with server
       mutateCurrentUser();
       mutateFetchedUser();
     } catch (error: any) {
+      // ❌ rollback if request fails
+      mutateCurrentUser();
+
       toast.error(error?.response?.data?.error || "Something went wrong");
     }
   }, [

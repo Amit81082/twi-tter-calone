@@ -23,45 +23,85 @@ const useLike = (postId: string) => {
     return likedIds.includes(currentUser?.id);
   }, [fetchedPost?.likedIds, currentUser?.id]);
 
-  const toggleLike = useCallback(async () => {
-    try {
-      if (!currentUser) {
-        loginModal.onOpen();
-        return;
-      }
+  const likeCount = useMemo(() => {
+    return fetchedPost?.likedIds?.length || 0;
+  }, [fetchedPost?.likedIds]);
 
+  const toggleLike = useCallback(async () => {
+    if (!currentUser || !fetchedPost) {
+      loginModal.onOpen();
+      return;
+    }
+
+    const oldLikedIds = fetchedPost.likedIds || [];
+
+    const updatedLikedIds = hasLiked
+      ? oldLikedIds.filter((id: string) => id !== currentUser.id)
+      : [...oldLikedIds, currentUser.id];
+
+    // 🚀 Optimistic Update
+    mutateFetchedPost(
+      {
+        ...fetchedPost,
+        likedIds: updatedLikedIds,
+      },
+      false,
+    );
+
+
+    mutateAllPosts(
+      (posts: any[] = []) =>
+        posts.map((post) =>
+          post.id === postId
+            ? {
+                ...post,
+                likedIds: updatedLikedIds,
+              }
+            : post,
+        ),
+      false,
+    );
+
+    try {
       if (hasLiked) {
         await axios.delete("/api/like", {
           data: {
             postId,
           },
         });
+
         toast.success("Unliked");
       } else {
         await axios.post("/api/like", {
           postId,
         });
+
         toast.success("Liked");
       }
-     await mutateFetchedPost();
-     await mutateAllPosts();
-      await mutateCurrentUser();
+
+      // Background Sync
+      mutateFetchedPost();
+      mutateAllPosts();
     } catch (error: any) {
+      // Rollback
+      mutateFetchedPost();
+
       toast.error(error?.response?.data?.error || "Something went wrong");
     }
   }, [
     currentUser,
+    fetchedPost,
     hasLiked,
     postId,
     loginModal,
     mutateFetchedPost,
-    mutateCurrentUser,
     mutateAllPosts,
   ]);
 
   return {
     hasLiked,
     toggleLike,
+    likeCount,
   };
 };
 
