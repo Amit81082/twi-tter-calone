@@ -62,6 +62,11 @@ const PostItem: React.FC<PostFeedProps> = ({ userId, data }) => {
     async (event: React.MouseEvent) => {
       event.stopPropagation();
 
+       mutatePosts(
+         (prev: any[] = []) => prev.filter((post) => post.id !== data.id),
+         false,
+       );
+
       try {
         await axios.delete(`/api/posts/${data?.id}`);
 
@@ -69,12 +74,12 @@ const PostItem: React.FC<PostFeedProps> = ({ userId, data }) => {
 
         mutatePosts();
 
-        router.refresh();
       } catch (error: any) {
         toast.error(error?.response?.data?.error || "Failed to delete post");
+        mutatePosts();
       }
     },
-    [data?.id, router],
+    [data?.id, mutatePosts],
   );
 
   if (!data) return null;

@@ -5,7 +5,7 @@ import PostItem from "@/components/posts/PostItem";
 import Header from "@/components/Header";
 import { ClipLoader } from "react-spinners";
 import { useParams } from "next/navigation";
-import PostModal from "@/components/PostModal";
+import PostModal from "@/components/modals/PostModal";
 import usePost from "@/hooks/usePost";
 import CommentFeed from "@/components/posts/CommentFeed";
 

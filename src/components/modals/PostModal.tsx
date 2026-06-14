@@ -7,8 +7,8 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import usePosts from "@/hooks/usePosts";
 import axios from "axios";
 import toast from "react-hot-toast";
-import Button from "./Button";
-import Avatar from "./Avatar";
+import Button from "../Button";
+import Avatar from "../Avatar";
 import usePost from "@/hooks/usePost";
 
 interface PostModalProps {
@@ -36,16 +36,19 @@ const PostModal: React.FC<PostModalProps> = ({
     try {
       setIsLoading(true);
 
+      const url =
+        isComment && postId ? `/api/comments?postId=${postId}` : "/api/posts";
 
-      const url = isComment && postId ? `/api/comments?postId=${postId}` : "/api/posts";
+      const res = await axios.post(url, { body });
 
-      await axios.post(url, { body });
+      const newPost = res.data;
       toast.success("Tweet created");
 
       setBody("");
 
+      // ✅ INSTANT UPDATE (IMPORTANT)
+      mutatePosts((prev: any[] = []) => [newPost, ...prev], false);
       mutateFetchedPost();
-      mutatePosts();
     } catch (error) {
       console.log(error);
       if (axios.isAxiosError(error)) {
@@ -60,7 +63,7 @@ const PostModal: React.FC<PostModalProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [body, isComment, postId]);
+  }, [body, isComment, postId, mutatePosts, mutateFetchedPost]);
   return (
     <div className="py-2 px-5 border-b border-neutral-800">
       {currentUser ? (
