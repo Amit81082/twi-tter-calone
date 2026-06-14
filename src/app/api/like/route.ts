@@ -52,14 +52,6 @@ export async function POST(request: Request) {
       },
     });
 
-    await Prisma.user.update({
-      where: {
-        id: post.authorId,
-      },
-      data: {
-        hasNotification: true,
-      },
-    });
 
 
     return Response.json(updatedPost, {
@@ -124,14 +116,6 @@ export async function DELETE(request: Request) {
       },
     });
 
-    await Prisma.user.update({
-      where: {
-        id: post.authorId,
-      },
-      data: {
-        hasNotification: true,
-      },
-    });
 
     return Response.json(updatedPost, {
       status: 200,

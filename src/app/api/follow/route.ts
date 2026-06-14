@@ -56,14 +56,7 @@ export async function POST(request: Request) {
         },
       });
 
-      await Prisma.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          hasNotification: true,
-        },
-      });
+
 
 
     return Response.json(updatedUser, {
@@ -124,15 +117,6 @@ export async function DELETE(request: Request) {
       data: {
         body: `${currentUser?.name} stopped following you`,
         userId,
-      },
-    });
-
-    await Prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        hasNotification: true,
       },
     });
 

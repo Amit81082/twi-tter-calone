@@ -30,27 +30,6 @@ export async function GET(request: Request) {
       },
     });
 
-    // Mark notifications as read
-    await Prisma.notification.updateMany({
-      where: {
-        userId,
-        isRead: false,
-      },
-
-      data: {
-        isRead: true,
-      },
-    });
-
-    await Prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        hasNotification: false,
-      },
-    });
-
     return Response.json(notifications, {
       status: 200,
     });

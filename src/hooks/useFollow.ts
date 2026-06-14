@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useUser from "@/hooks/useUser";
 import useLoginModal from "@/hooks/useLoginModal";
+import useNotification from "./useNotifications";
 
 const useFollow = (userId: string) => {
   const loginModal = useLoginModal();
@@ -14,6 +15,7 @@ const useFollow = (userId: string) => {
   const { data: currentUser, mutate: mutateCurrentUser } = useCurrentUser();
 
   const { data: fetchedUser, mutate: mutateFetchedUser } = useUser(userId);
+  const {mutate: mutateNotifications} = useNotification(currentUser?.id);
 
  const isFollowing = useMemo(() => {
    return currentUser?.followingIds?.includes(userId) || false;
@@ -60,6 +62,7 @@ const useFollow = (userId: string) => {
       // ✅ sync with server
       mutateCurrentUser();
       mutateFetchedUser();
+      mutateNotifications();
     } catch (error: any) {
       // ❌ rollback if request fails
       mutateCurrentUser();

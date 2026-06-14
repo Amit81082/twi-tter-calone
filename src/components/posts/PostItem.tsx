@@ -26,6 +26,7 @@ const PostItem: React.FC<PostFeedProps> = ({ userId, data }) => {
   const { data: currentUser } = useCurrentUser();
   const { mutate: mutatePosts } = usePosts(userId);
   const { hasLiked, toggleLike, likeCount } = useLike(data.id);
+  
 
   const goToUser = useCallback(
     (event: any) => {

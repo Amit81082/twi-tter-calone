@@ -92,15 +92,6 @@ export async function POST(request: Request) {
       },
     });
 
-    await Prisma.user.update({
-      where: {
-        id: post.authorId,
-      },
-      data: {
-        hasNotification: true,
-      },
-    });
-
     return Response.json(comment, {
       status: 201,
     });

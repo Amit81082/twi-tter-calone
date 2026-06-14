@@ -8,6 +8,7 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import usePost from "@/hooks/usePost";
 import usePosts from "@/hooks/usePosts";
 import useLoginModal from "@/hooks/useLoginModal";
+import useNotification from "./useNotifications";
 
 const useLike = (postId: string) => {
   const loginModal = useLoginModal();
@@ -16,6 +17,8 @@ const useLike = (postId: string) => {
 
   const { data: fetchedPost, mutate: mutateFetchedPost } = usePost(postId);
   const { mutate: mutateAllPosts } = usePosts();
+  const { mutate: mutateNotifications } = useNotification(currentUser?.id);
+
 
   const hasLiked = useMemo(() => {
     const likedIds = fetchedPost?.likedIds || [];
@@ -82,6 +85,7 @@ const useLike = (postId: string) => {
       // Background Sync
       mutateFetchedPost();
       mutateAllPosts();
+      mutateNotifications();
     } catch (error: any) {
       // Rollback
       mutateFetchedPost();

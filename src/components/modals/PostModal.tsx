@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import Button from "../Button";
 import Avatar from "../Avatar";
 import usePost from "@/hooks/usePost";
+import useNotification from "@/hooks/useNotifications";
 
 interface PostModalProps {
   placeholder: string;
@@ -28,6 +29,8 @@ const PostModal: React.FC<PostModalProps> = ({
   const { data: currentUser } = useCurrentUser();
   const { mutate: mutatePosts } = usePosts();
   const { mutate: mutateFetchedPost } = usePost(postId as string);
+  const { mutate: mutateNotifications } = useNotification(currentUser?.id);
+
 
   const [body, setBody] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -49,6 +52,8 @@ const PostModal: React.FC<PostModalProps> = ({
       // ✅ INSTANT UPDATE (IMPORTANT)
       mutatePosts((prev: any[] = []) => [newPost, ...prev], false);
       mutateFetchedPost();
+
+      mutateNotifications();
     } catch (error) {
       console.log(error);
       if (axios.isAxiosError(error)) {

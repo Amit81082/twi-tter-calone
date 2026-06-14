@@ -9,9 +9,15 @@ import SidebarItem from "./SidebarItem";
 import SidebarTweetButton from "./SidebarTweetButton";
 import { signOut } from "next-auth/react";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import useNotification from "@/hooks/useNotifications";
 
 const Sidebar = () => {
   const { data: currentUser, isLoading } = useCurrentUser();
+   const { data: notifications = [] } = useNotification(currentUser?.id);
+
+   const hasNotification = Array.isArray(notifications)
+     ? notifications.some((n: any) => !n.isRead)
+     : false;
   const items = [
     {
       label: "Home",
@@ -29,7 +35,7 @@ const Sidebar = () => {
       href: "/notifications",
       icons: BsBellFill,
       auth: true,
-      alert: currentUser?.hasNotification,
+      alert: hasNotification,
     },
     {
       label: "Profile",

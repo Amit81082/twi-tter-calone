@@ -3,6 +3,7 @@ import React, {useEffect} from 'react'
 import useNotification from '@/hooks/useNotifications'
 import  useCurrentUser  from '@/hooks/useCurrentUser'
 import { BsTwitter } from 'react-icons/bs';
+import axios from 'axios';
 
 const NotificationsFeed = () => {
 
@@ -12,6 +13,14 @@ const NotificationsFeed = () => {
   useEffect(() => {
     mutateCurrentUser();
   }, [mutateCurrentUser]);
+
+   useEffect(() => {
+     return () => {
+       axios.post("/api/notifications/read");
+     };
+   }, []);
+
+
 
   if (fetchedNotifications.length === 0) {
     return (
